@@ -21,6 +21,12 @@ export default async function NeighborhoodPage({ params }: { params: Promise<{ s
       <div className="max-w-2xl mx-auto px-4 py-12">
         <Link href="/" className="text-green-600 text-sm mb-6 block">→ الرئيسية</Link>
         <h1 className="text-3xl font-bold text-gray-900 mb-2">حي {neighborhood?.name}</h1>
+        <Link
+  href={'/mosque/add?neighborhood=' + slug}
+  className="inline-flex items-center gap-2 bg-green-600 text-white px-4 py-2 rounded-xl text-sm font-medium mb-6"
+>
+  + إضافة مسجد
+</Link>
         <p className="text-gray-500 mb-8">{mosques?.length || 0} مسجد</p>
         <div className="flex flex-col gap-3">
           {mosques?.length === 0 && (

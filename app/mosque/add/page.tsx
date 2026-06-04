@@ -1,12 +1,14 @@
 'use client'
 
 import { useState } from 'react'
+import { useSearchParams } from 'next/navigation'
 import { supabase } from '@/lib/supabase'
 import Link from 'next/link'
 
 export default function AddMosquePage() {
   const [name, setName] = useState('')
-  const [neighborhood, setNeighborhood] = useState('')
+  const searchParams = useSearchParams()
+  const [neighborhood, setNeighborhood] = useState(searchParams.get('neighborhood') || '')
   const [mapsUrl, setMapsUrl] = useState('')
   const [sent, setSent] = useState(false)
   const [loading, setLoading] = useState(false)
