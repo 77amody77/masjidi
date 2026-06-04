@@ -6,6 +6,11 @@ export default async function AdminPage() {
     .select('*, mosques(name)')
     .eq('status', 'pending')
     .order('created_at', { ascending: false })
+  const { data: pendingMosques } = await supabaseAdmin
+   .from('mosques')
+   .select('*, neighborhoods(name)')
+   .eq('status', 'pending')
+   .order('created_at', { ascending: false })
 
   const fields: Record<string, string> = {
     women_section: 'مصلى نساء',
@@ -28,6 +33,31 @@ export default async function AdminPage() {
     <main dir="rtl" className="min-h-screen bg-gray-50 p-8">
       <div className="max-w-3xl mx-auto">
         <h1 className="text-2xl font-bold text-gray-900 mb-2">لوحة الأدمن</h1>
+        {pendingMosques && pendingMosques.length > 0 && (
+  <div className="mb-8">
+    <h2 className="text-lg font-bold text-gray-900 mb-4">مساجد جديدة تنتظر الموافقة</h2>
+    <div className="flex flex-col gap-3">
+      {pendingMosques.map((mosque: any) => (
+        <div key={mosque.id} className="bg-white rounded-xl border border-gray-100 shadow-sm p-4">
+          <div className="flex justify-between items-start mb-3">
+            <div>
+              <p className="font-medium text-gray-900">{mosque.name}</p>
+              <p className="text-sm text-gray-500">حي {mosque.neighborhoods?.name}</p>
+            </div>
+          </div>
+          <div className="flex gap-2">
+            <form action={'/api/admin/approve-mosque/' + mosque.id} method="POST">
+              <button className="bg-green-600 text-white px-4 py-2 rounded-lg text-sm">موافقة</button>
+            </form>
+            <form action={'/api/admin/reject-mosque/' + mosque.id} method="POST">
+              <button className="bg-red-50 text-red-500 border border-red-100 px-4 py-2 rounded-lg text-sm">رفض</button>
+            </form>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+)}
         <p className="text-gray-500 mb-8">{pendingInfo?.length || 0} مساهمة تنتظر المراجعة</p>
         <div className="flex flex-col gap-3">
           {pendingInfo?.length === 0 && (
