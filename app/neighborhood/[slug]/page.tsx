@@ -2,7 +2,10 @@ import { supabase } from '@/lib/supabase'
 import Link from 'next/link'
 import dynamic from 'next/dynamic'
 
-const Map = dynamic(() => import('../../components/Map'), { ssr: false })
+const Map = dynamic<{ mosques: { id: string; name: string; lat: number; lng: number }[] }>(
+  () => import('@/app/components/Map'),
+  { ssr: false }
+)
 
 export default async function NeighborhoodPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params
