@@ -1,5 +1,8 @@
 import { supabase } from '@/lib/supabase'
 import Link from 'next/link'
+import dynamic from 'next/dynamic'
+
+const Map = dynamic(() => import('@/app/components/Map'), { ssr: false })
 
 export default async function NeighborhoodPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params
@@ -28,6 +31,11 @@ export default async function NeighborhoodPage({ params }: { params: Promise<{ s
   + إضافة مسجد
 </Link>
         <p className="text-gray-500 mb-8">{mosques?.length || 0} مسجد</p>
+        {mosques && mosques.length > 0 && (
+  <div className="mb-6">
+    <Map mosques={mosques.filter(m => m.lat && m.lng)} />
+  </div>
+)}
         <div className="flex flex-col gap-3">
           {mosques?.length === 0 && (
             <p className="text-gray-400 text-center py-12">لا توجد مساجد مضافة بعد</p>
