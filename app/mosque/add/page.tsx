@@ -1,11 +1,10 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, Suspense } from 'react'
 import { useSearchParams } from 'next/navigation'
-import { supabase } from '@/lib/supabase'
 import Link from 'next/link'
 
-export default function AddMosquePage() {
+function AddMosqueForm() {
   const [name, setName] = useState('')
   const searchParams = useSearchParams()
   const [neighborhood, setNeighborhood] = useState(searchParams.get('neighborhood') || '')
@@ -105,5 +104,13 @@ export default function AddMosquePage() {
         </div>
       </div>
     </main>
+  )
+}
+
+export default function AddMosquePage() {
+  return (
+    <Suspense>
+      <AddMosqueForm />
+    </Suspense>
   )
 }
