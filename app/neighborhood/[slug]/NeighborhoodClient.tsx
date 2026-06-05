@@ -1,5 +1,6 @@
 'use client'
 
+import { useState } from 'react'
 import dynamic from 'next/dynamic'
 import Link from 'next/link'
 
@@ -26,6 +27,12 @@ export default function NeighborhoodClient({
   mosques: Mosque[]
   slug: string
 }) {
+  const [query, setQuery] = useState('')
+
+  const filtered = mosques.filter(m =>
+    m.name.includes(query.trim())
+  )
+
   return (
     <main className="min-h-screen bg-gray-50" dir="rtl">
       <div className="max-w-2xl mx-auto px-4 py-12">
@@ -45,11 +52,21 @@ export default function NeighborhoodClient({
           </div>
         )}
 
+        <input
+          type="text"
+          value={query}
+          onChange={e => setQuery(e.target.value)}
+          placeholder="ابحث عن مسجد..."
+          className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm mb-4 bg-white shadow-sm focus:outline-none focus:border-green-400"
+        />
+
         <div className="flex flex-col gap-3">
-          {mosques?.length === 0 && (
-            <p className="text-gray-400 text-center py-12">لا توجد مساجد مضافة بعد</p>
+          {filtered.length === 0 && (
+            <p className="text-gray-400 text-center py-12">
+              {mosques.length === 0 ? 'لا توجد مساجد مضافة بعد' : 'لا توجد نتائج'}
+            </p>
           )}
-          {mosques?.map((m) => (
+          {filtered.map((m) => (
             <Link
               key={m.id}
               href={'/mosque/' + m.id}
